@@ -8,6 +8,9 @@ Project Title: Learning from the Past: Reverse and Forward Forecasting of Walmar
 # Why Reverse Forecast?
 To verify that the Prophet model accurately captures seasonal and holiday-driven peaks and troughs, a reverse forecast is performed on existing historical data (2010–2012). Overlaying the fitted forecast onto known sales confirms alignment with Christmas spikes and post‑holiday dips. Once validated, the forecast extends forward for the next 26 weeks.
 
+**Data Source on Kaggle:**  
+Walmart Weekly Sales Forecast Dataset: https://www.kaggle.com/datasets/mikhail1681/walmart-sales/data
+
 # Sections
 # Live Dashboard:
 View the interactive forecast on Tableau Public - https://public.tableau.com/app/profile/avinash.bunga/viz/Walmart1_17481954405640/Dashboard3#1
