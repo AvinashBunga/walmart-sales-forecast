@@ -7,12 +7,12 @@ from prophet.diagnostics import cross_validation, performance_metrics
 from dateutil.easter import easter
 
 def main():
-    # ── 1. Paths ────────────────────────────────────────────────────────────────
+    #1. Paths
     base     = os.path.dirname("/Users/avinash/Desktop/CIS/Avinash/MERSEA/Walmart1/Walmart_Sales.csv")
     inp      = os.path.join(base, "stage1_national_walmart.csv")
     out_fp   = os.path.join(base, "stage2_forced_holiday_plus_forecast.csv")
 
-    # ── 2. Load & Prep ──────────────────────────────────────────────────────────
+    #2. Load & Prep
     try:
         df = pd.read_csv(inp, parse_dates=["Week"])
     except FileNotFoundError:
@@ -35,7 +35,7 @@ def main():
         ]
     holidays_df = pd.DataFrame(events)
 
-    # ── 3. Build & Fit Prophet ─────────────────────────────────────────────────
+    #3. Build & Fit Prophet
     m = Prophet(
         growth="logistic",
         holidays=holidays_df,
@@ -51,7 +51,7 @@ def main():
 
     m.fit(df[["ds","y","cap"]])
 
-    # ── 4. Back-test CV ──────────────────────────────────────────────────────────
+    #4. Back-test CV
     print("🔍 Back-testing (365d train → 180d test)…")
     df_cv = cross_validation(
         m,
@@ -66,12 +66,12 @@ def main():
     if mape > 0.10:
         print(f"⚠️  MAPE {mape:.2%} > 10% — consider tuning further")
 
-    # ── 5. Forecast next 26 weeks ────────────────────────────────────────────────
+    #5. Forecast next 26 weeks
     future = m.make_future_dataframe(periods=26, freq="W-MON")
     future["cap"] = cap
     forecast = m.predict(future)
 
-    # ── 6. Save forecast ─────────────────────────────────────────────────────────
+    #6. Save forecast
     out = forecast[["ds","yhat","yhat_lower","yhat_upper"]].rename(columns={
         "ds":"Week",
         "yhat":"Forecast_Units",
